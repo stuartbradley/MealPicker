@@ -7,10 +7,9 @@ using MealPicker.Domain.Core;
 
 namespace MealPicker.Domain
 {
-    public class Shopper:Entity
+    public class Pot:Entity
     {
-        private List<Meal> _meals;
-        public IReadOnlyList<Meal> Meals;
-
+        public DateTime From { get; private set; }
+        public DateTime To { get; private set; }
     }
 }

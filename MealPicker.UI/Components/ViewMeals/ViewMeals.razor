@@ -1,0 +1,57 @@
+﻿@using MealPicker.UI.Components.AddNewMeal
+@using System.Timers
+@using System.Threading
+
+@inject IViewMealViewModel model
+
+<DxDataGrid Data="@model.Meals"
+            @ref="@grid"
+            AutoCollapseDetailRow="true"
+            ShowDetailRow="true"
+            SelectionMode="DataGridSelectionMode.None"
+            PageSize="10"
+            CssClass="mw-1100 mb-2">
+    <Columns>
+        <DxDataGridColumn Field="@nameof(ViewMealDto.MealName)" Caption="Meal"  />
+    </Columns>
+    <DetailRowTemplate>
+        <DxDataGrid Data="@model.Meals.Single(x => x.MealId == context.MealId).Ingredients"
+                    SelectionMode="DataGridSelectionMode.None">
+            <DxDataGridDateEditColumn Field="@nameof(ViewMealIngredients.IngredientName)" />
+        </DxDataGrid>
+    </DetailRowTemplate>
+</DxDataGrid>
+<DxButton Text="Add New Meal" Click="ShowPopup" RenderStyle="ButtonRenderStyle.Danger" />
+<DxPopup HeaderText="Add New Meal" @bind-Visible="@showPopup">
+    <AddNewMeal OnSubmit="AddMealSubmit"/>
+</DxPopup>
+
+@code
+{
+    private bool showPopup { get; set; } = false;
+    DxDataGrid<ViewMealDto> grid;
+    protected override async Task OnInitializedAsync()
+    {
+        await model.PopulateMeals();
+    }
+
+    public void ShowPopup()
+    {
+        showPopup = true;
+
+    }
+
+    async void AddMealSubmit(bool result)
+    {
+        showPopup = false;
+        if (result == true)
+        {
+            await model.PopulateMeals();
+            await grid.Refresh();
+            await InvokeAsync(StateHasChanged);
+        }
+
+
+    }
+
+}

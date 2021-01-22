@@ -12,6 +12,7 @@ namespace MealPicker.Domain.Core
 
         public Entity()
         {
+            Id = Guid.NewGuid();
         }
         public Entity(Guid id)
         {

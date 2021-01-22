@@ -1,0 +1,54 @@
+﻿@inject IAddMealViewModel model
+
+<EditForm Model="@model" Context="addNewMealContext" OnValidSubmit="@SaveMeal" OnInvalidSubmit="@HandleInvalidSubmit">
+    <DataAnnotationsValidator/>
+    <DxFormLayout>
+        <DxFormLayoutItem Caption="MealName:" ColSpanMd="12">
+            <Template>
+                <DxTextBox @bind-Text="model.MealName"/>
+                <ValidationMessage For="@(() => model.MealName)"/>
+            </Template>
+        </DxFormLayoutItem>
+        <DxFormLayoutItem Caption="Ingredients:" ColSpanMd="12" BeginRow="true">
+            <Template>
+                <DxMemo Rows="8" @bind-Text="model.Ingredients"/>
+                <ValidationMessage For="@(() => model.Ingredients)"/>
+            </Template>
+        </DxFormLayoutItem>
+        <DxFormLayoutItem ColSpanMd="2">
+            <Template>
+                <DxButton SubmitFormOnClick="true" Text="Submit" RenderStyle="ButtonRenderStyle.Primary"/>
+            </Template>
+        </DxFormLayoutItem>
+        <DxFormLayoutItem ColSpanMd="2">
+            <Template>
+                <DxButton Text="Cancel" RenderStyle="ButtonRenderStyle.Danger"/>
+            </Template>
+        </DxFormLayoutItem>
+    </DxFormLayout>
+</EditForm>
+@code
+{
+    [Parameter]
+    public EventCallback<bool> OnSubmit { get; set; }
+
+    public async Task SaveMeal()
+    {
+        Console.WriteLine("this is working");
+        var result = await model.SaveMeal();
+        if (result.StatusCode == 201)
+        {
+            await OnSubmit.InvokeAsync(true);
+        }
+    }
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+    }
+    private void HandleInvalidSubmit()
+    {
+        Console.WriteLine("OnInvalidSubmit");
+    }
+
+}

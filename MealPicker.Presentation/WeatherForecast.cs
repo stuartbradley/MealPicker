@@ -1,6 +1,6 @@
 using System;
 
-namespace MealPicker.UI.Data
+namespace MealPicker.Presentation
 {
     public class WeatherForecast
     {

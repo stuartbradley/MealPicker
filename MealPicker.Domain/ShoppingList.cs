@@ -7,10 +7,8 @@ using MealPicker.Domain.Core;
 
 namespace MealPicker.Domain
 {
-    public class Shopper:Entity
+    public class ShoppingList:Entity
     {
-        private List<Meal> _meals;
-        public IReadOnlyList<Meal> Meals;
-
+        public List<Meal> Meals { get; }
     }
 }
